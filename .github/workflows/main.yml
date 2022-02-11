@@ -37,9 +37,9 @@ jobs:
    steps: 
       - uses: actions/checkout@v2
       - name: docker login
-        #env:
-         # DOCKER_USER: ${{secretes.DOCKER_USER}}
-          #DOCKER_PASSWORD: ${{secretes.DOCKER_PASSWORD}}
+        env:
+          DOCKER_USER: ${{secretes.DOCKER_USER}}
+          DOCKER_PASSWORD: ${{secretes.DOCKER_PASSWORD}}
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
           docker build . -f Dockerfile -t venkat/images:web2
