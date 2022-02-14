@@ -42,8 +42,12 @@ jobs:
          #DOCKER_PASSWORD: ${{secretes.DOCKER_PASSWORD}}
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-          docker build . -f Dockerfile -t venkat/images:web2
-          docker push venkat/images:web2
+          docker build . -f Dockerfile -t reponame/images:demo
+          docker push reponame/images:demo
+    
+    
+    
+    
     
       #- name: "Build & push Docker image"
        # uses: mr-smithers-excellent/docker-build-push@v5
