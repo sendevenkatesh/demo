@@ -15,7 +15,13 @@ jobs:
         run: |
           expr 1 + 1 > output.log
 
-
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: create folder release
+        run: |
+         mkdir release
+         
 
 
 
