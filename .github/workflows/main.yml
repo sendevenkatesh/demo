@@ -30,6 +30,8 @@ jobs:
       - name: create folder release
         run: |
          mkdir release
+      - name: run power
+        run : ./power.sh
          
          
          
