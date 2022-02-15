@@ -10,7 +10,7 @@ on:
 
 #on: 
  # push: 
-  #  branches: [dev, main]
+  # branches: [dev, main]
   
 jobs:
   build:
