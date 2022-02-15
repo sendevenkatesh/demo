@@ -10,4 +10,4 @@ jobs:
          - name: script
            run: echo Hello,world
   calling_called:
-     uses: sendevenkatesh/called/ .github/workflows/called.yml@main
+     uses: sendevenkatesh/demo/ .github/workflows/called.yml@main
