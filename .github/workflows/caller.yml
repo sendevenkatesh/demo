@@ -4,10 +4,10 @@ name: reusable workflow
 on: 
  workflow_dispatch:
 jobs: 
-  caller job:
+  caller_job:
      runs-on: ubuntu-latest
      steps:
          - name: script
            run: echo Hello,world
-  calling called:
-     uses: sendevenkatesh/demo/./github/workflows/called.yml
+  calling_called:
+     uses: sendevenkatesh/demo/ ./github/workflows/called.yml@main
