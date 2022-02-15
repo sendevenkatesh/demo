@@ -1,0 +1,13 @@
+##caller workflow
+
+name: reusable workflow
+on: 
+ workflow_dispatch:
+jobs: 
+  caller job:
+     runs-on: ubuntu-latest
+     steps:
+         - name: script
+           run: echo Hello,world
+  calling called:
+     uses: sendevenkatesh/demo/./github/workflows/called.yml
