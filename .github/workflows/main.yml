@@ -1,12 +1,13 @@
 name: ci for java 
 
 on:
-  pull_request:
+ workflow_call:
+  #pull_request:
     # Sequence of patterns matched against refs/heads
-    branches:    
-      - main
-      - 'mona/octocat'
-      - 'releases/**'
+    #branches:    
+     # - main
+      #- 'mona/octocat'
+      #- 'releases/**'
 
 #on: 
  # push: 
