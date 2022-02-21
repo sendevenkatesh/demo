@@ -21,8 +21,8 @@ jobs:
           # Fetch at least the immediate parents so that if this is a pull request then we can checkout the head.
           fetch-depth: 2
       # If this run was triggered by a pull request event, then checkout the head of the pull request instead of the merge commit.
-      - run: git checkout HEAD^2
-        if: ${{ github.event_name == 'pull_request' }} 
+      #- run: git checkout HEAD^2
+       # if: ${{ github.event_name == 'pull_request' }} 
 
       # Java is required to run ScanCentral Client, and may be required for your build
       # Java version to use depends on the Java version required to run your build (if any),
@@ -30,7 +30,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v1
         with:
-          java-version: 11
+          java-version: 14
 
       ### Set up Fortify ScanCentral Client ###
       - name: Download Fortify ScanCentral Client
