@@ -35,9 +35,9 @@ jobs:
 
         run: |
 
-          $repo_name = "${{ github.repository }}".substring(17)
+          $repo_name = "${{ github.gha-setup-scancentral-client }}".substring(17)
 
-          #$build_name = "$repo_name-fortifybuild"
+          #$build_name = "$fortify/gha-setup-scancentral-client"
           $build_name = "$demo-fortifybuild"
 
           echo "::set-output name=buildName::$build_name"
