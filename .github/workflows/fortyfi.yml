@@ -161,7 +161,6 @@ jobs:
           FPRUtility.bat -project ${{ steps.get-fpr-name.outputs.fprName }} -information -listIssues -categoryIssueCounts
 
  
-
       - name: Run fortify Critical
 
         id: run-fortify-critical
