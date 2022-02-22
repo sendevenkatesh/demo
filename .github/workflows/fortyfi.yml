@@ -15,8 +15,6 @@ jobs:
       - name: Check Out Source Code
         uses: actions/checkout@v2
 
-        with:
-          fetch-depth: 2
       - name: Setup Java
         uses: actions/setup-java@v1
         with:
