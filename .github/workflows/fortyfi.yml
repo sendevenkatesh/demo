@@ -42,7 +42,7 @@ jobs:
 
         shell: pwsh
       - run: pwd
-      - run: sourceanalyzer -b ${{ steps.get-build-name.outputs.buildName }} -clean
+      - run: sourceanalyzer -b ${{ steps.get-build-name }} -clean
 
 
       - name: Generate FPR Name
