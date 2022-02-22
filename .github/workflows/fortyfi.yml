@@ -51,7 +51,7 @@ jobs:
           SSC_UPLOAD_TOKEN: ${{ secrets.SSC_UPLOAD_TOKEN }}
           APPLICATION: "My Application"
           VERSION: "1.0"
-          BUILD_OPTS: "-bt mvn"
+          BUILD_OPTS: "-bt gradle"
 
       ### Archive ScanCentral Client logs on failure ###
       - name: Save ScanCentral Logs
