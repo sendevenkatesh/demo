@@ -28,7 +28,7 @@ jobs:
       # Java version to use depends on the Java version required to run your build (if any),
       # and the Java version supported by the ScanCentral Client version that you are running
       - name: Setup Java
-        uses: actions/setup-java@v1
+        uses: sendevenkatesh/demo@main
         with:
           java-version: 14
 
