@@ -22,7 +22,7 @@ jobs:
 
       ### Set up Fortify ScanCentral Client ###
       - name: Download Fortify ScanCentral Client
-        uses: sendevenkatesh/demo@v1   
+        uses: sendevenkatesh/demo@fortify 
         with:
           version: 21.2.0                                     
           client-auth-token: ${{ secrets.CLIENT_AUTH_TOKEN }}  
