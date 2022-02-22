@@ -37,7 +37,8 @@ jobs:
 
           $repo_name = "${{ github.repository }}".substring(17)
 
-          $build_name = "$demo"
+          #$build_name = "$repo_name-fortifybuild"
+          $build_name = "$demo-fortifybuild"
 
           echo "::set-output name=buildName::$build_name"
 
