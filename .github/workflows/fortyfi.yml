@@ -31,14 +31,14 @@ jobs:
       ### Run Fortify ScanCentral Client ###
       
       - name: Generate Build Name
+
         id: get-build-name
 
         run: |
 
           $repo_name = "${{ github.repository }}".substring(17)
 
-          #$build_name = "$github.repository"
-          $build_name = "$demo-fortifybuild"
+          $build_name = "$repo_name-fortifybuild"
 
           echo "::set-output name=buildName::$build_name"
 
