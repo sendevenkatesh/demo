@@ -37,7 +37,7 @@ jobs:
 
           $repo_name = "${{ github.repository }}".substring(17)
 
-          $build_name = "$repo_name-fortifybuild"
+          $build_name = "$demo"
 
           echo "::set-output name=buildName::$build_name"
 
@@ -64,7 +64,7 @@ jobs:
 
           echo "::set-output name=localFprName::$local_fpr_name"
 
-        shell: bash
+        shell: pwsh
 
       - name: Generate version
 
@@ -78,8 +78,7 @@ jobs:
 
           echo "::set-output name=version::$version"
 
-        shell: bash
-
+        shell: pwsh
  
 
       - name: Generate PDF Options
