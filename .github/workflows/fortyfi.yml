@@ -7,22 +7,16 @@ on:
         branches: [fortify]
 jobs:                                                  
   Fortify-SAST:
-    runs-on: ubuntu-latest 
+    runs-on: windows-latest 
     steps:
       
     # Check out source code
 
       - name: Check Out Source Code
-
         uses: actions/checkout@v2
 
         with:
-
-          # Fetch at least the immediate parents so that if this is a pull request then we can checkout the head.
-
           fetch-depth: 2
-
-       
       - name: Setup Java
         uses: actions/setup-java@v1
         with:
@@ -36,9 +30,7 @@ jobs:
           client-auth-token: ${{ secrets.CLIENT_AUTH_TOKEN }}  
       ### Run Fortify ScanCentral Client ###
       
-
       - name: Generate Build Name
-
         id: get-build-name
 
         run: |
@@ -49,17 +41,10 @@ jobs:
 
           echo "::set-output name=buildName::$build_name"
 
-        shell: bash
-
- 
+        shell: pwsh
 
       - run: sourceanalyzer -b ${{ steps.get-build-name.outputs.buildName }} -clean
 
- 
-
-      - run: dotnet restore
-
- 
 
       - name: Generate FPR Name
 
@@ -80,8 +65,6 @@ jobs:
           echo "::set-output name=localFprName::$local_fpr_name"
 
         shell: bash
-
- 
 
       - name: Generate version
 
@@ -128,7 +111,6 @@ jobs:
           sourceanalyzer -b ${{ steps.get-build-name.outputs.buildName }} -debug-verbose -scan -f ${{ steps.get-fpr-name.outputs.localFprName }}
 
  
-
       - name: Download latest FPR report from SSC
 
         run: |
@@ -140,7 +122,6 @@ jobs:
         shell: bash   
 
  
-
       - name: Merge Current FPR with latest
 
         id: merged-report
@@ -155,15 +136,13 @@ jobs:
 
           $result=FPRUtility.bat -merge -project existing.fpr -source ${{ steps.get-fpr-name.outputs.localFprName }} -f ${{ steps.get-fpr-name.outputs.fprName }}
 
- 
-
       - name: Generate PDF Report
 
         run: |
 
           BIRTReportGenerator -template "${{ steps.get-pdf-options.outputs.templateName }}" -source ${{ steps.get-fpr-name.outputs.fprName }} -format PDF -output "${{ steps.get-pdf-options.outputs.pdfName }}"
 
-        shell: pwsh
+        shell: bash
 
  
 
@@ -203,7 +182,7 @@ jobs:
 
           echo "::set-output name=score::$score"
 
-        shell: pwsh
+        shell: bash
 
  
 
@@ -225,7 +204,7 @@ jobs:
 
           echo "::set-output name=score::$score"
 
-        shell: pwsh
+        shell: bash
 
  
 
@@ -247,7 +226,7 @@ jobs:
 
           echo "::set-output name=score::$score"
 
-        shell: pwsh
+        shell: bash
 
  
 
@@ -269,9 +248,7 @@ jobs:
 
           echo "::set-output name=score::$score"
 
-        shell: pwsh
-
- 
+        shell: bash
 
       - name: Calculate Score
 
