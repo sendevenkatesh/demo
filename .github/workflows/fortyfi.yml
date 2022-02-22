@@ -9,41 +9,289 @@ jobs:
   Fortify-SAST:
     runs-on: ubuntu-latest 
     steps:
-      - name: Check Out Source Code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 2
-     
-      #- run: git checkout HEAD^2
-       # if: ${{ github.event_name == 'pull_request' }} 
-
-      - name: Setup Java
-        uses: actions/setup-java@v1
-        with:
-          java-version: 14
-
-      ### Set up Fortify ScanCentral Client ###
-      - name: Download Fortify ScanCentral Client
-        uses: fortify/gha-setup-scancentral-client@v1   
-        with:
-          version: 21.2.0                                     
-          client-auth-token: ${{ secrets.CLIENT_AUTH_TOKEN }}  
-      ### Run Fortify ScanCentral Client ###
       
-      - name: Perform SAST Scan
-        run: scancentral -url ${SC_CONTROLLER_URL} start 
-             $BUILD_OPTS -upload -application $APPLICATION -version $VERSION -uptoken $SSC_UPLOAD_TOKEN
-        env:                                            
-          SC_CONTROLLER_URL: ${{ secrets.SC_CONTROLLER_URL }}
-          SSC_UPLOAD_TOKEN: ${{ secrets.SSC_UPLOAD_TOKEN }}
-          APPLICATION: "My Application"
-          VERSION: "1.0"
-          BUILD_OPTS: "-bt mvn"
+    # Check out source code
 
-      ### Archive ScanCentral Client logs on failure ###
-      - name: Save ScanCentral Logs
-        uses: actions/upload-artifact@v2                
-        if: failure()
+      - name: Check Out Source Code
+
+        uses: actions/checkout@v2
+
         with:
-           name: scancentral-logs
-           path: ~/.fortify/scancentral/log
+
+          # Fetch at least the immediate parents so that if this is a pull request then we can checkout the head.
+
+          fetch-depth: 2
+
+ 
+
+      - name: Generate Build Name
+
+        id: get-build-name
+
+        run: |
+
+          $repo_name = "${{ github.repository }}".substring(17)
+
+          $build_name = "$repo_name-fortifybuild"
+
+          echo "::set-output name=buildName::$build_name"
+
+        shell: bash
+
+ 
+
+      - run: sourceanalyzer -b ${{ steps.get-build-name.outputs.buildName }} -clean
+
+ 
+
+      - run: dotnet restore
+
+ 
+
+      - name: Generate FPR Name
+
+        id: get-fpr-name
+
+        run: |
+
+          $repo_name = "${{ github.repository }}".substring(17)
+
+          $fpr_name="$pwd\$repo_name.fpr"
+
+          $prefix="_local"
+
+          $local_fpr_name = "$pwd\$repo_name$prefix.fpr"
+
+          echo "::set-output name=fprName::$fpr_name"
+
+          echo "::set-output name=localFprName::$local_fpr_name"
+
+        shell: bash
+
+ 
+
+      - name: Generate version
+
+        id: get-version
+
+        run: |
+
+          $repo_name = "${{ github.repository }}".substring(17).ToLower()
+
+          $version = "$repo_name-v1"
+
+          echo "::set-output name=version::$version"
+
+        shell: bash
+
+ 
+
+      - name: Generate PDF Options
+
+        id: get-pdf-options
+
+        run: |
+
+          $repo_name = "${{ github.repository }}".substring(17)
+
+          $template_name = "Developer Workbook"
+
+          $report_name = "$repo_name $template_name Report"
+
+          $pdf_name = "$report_name.pdf"
+
+          echo "::set-output name=templateName::$template_name"
+
+          echo "::set-output name=reportName::$report_name"
+
+          echo "::set-output name=pdfName::$pdf_name"
+
+        shell: bash
+
+      - run: |
+
+          sourceanalyzer -b ${{ steps.get-build-name.outputs.buildName }} -debug-verbose -libdirs **/* **/*
+
+          sourceanalyzer -b ${{ steps.get-build-name.outputs.buildName }} -debug-verbose -scan -f ${{ steps.get-fpr-name.outputs.localFprName }}
+
+ 
+
+      - name: Download latest FPR report from SSC
+
+        run: |
+
+          echo "Downloding FPR from remote SSC"
+
+          fortifyclient downloadFPR -file existing.fpr -url https://fortify.philips.com/ssc -authtoken ${{ secrets.FORTIFY_DOWNLOAD_TOKEN }}  -application "PIC iX"  -version ${{ steps.get-version.outputs.version }} || echo "The repository does not have an application version registered in Fortify. Consult https://globalticketing.ta.philips.com/Home.aspx?view=PSSO to register manually."
+
+        shell: bash   
+
+ 
+
+      - name: Merge Current FPR with latest
+
+        id: merged-report
+
+        run: |
+
+          echo "Merging Remote FPR with local FPR"
+
+          echo "merged fpr name ${{ steps.get-fpr-name.outputs.fprName }}"
+
+          echo "local fpr name ${{ steps.get-fpr-name.outputs.localFprName }}"
+
+          $result=FPRUtility.bat -merge -project existing.fpr -source ${{ steps.get-fpr-name.outputs.localFprName }} -f ${{ steps.get-fpr-name.outputs.fprName }}
+
+ 
+
+      - name: Generate PDF Report
+
+        run: |
+
+          BIRTReportGenerator -template "${{ steps.get-pdf-options.outputs.templateName }}" -source ${{ steps.get-fpr-name.outputs.fprName }} -format PDF -output "${{ steps.get-pdf-options.outputs.pdfName }}"
+
+        shell: pwsh
+
+ 
+
+      - name: Upload PDF Report
+
+        uses: actions/upload-artifact@v2
+
+        with:
+
+          name: ${{ steps.get-pdf-options.outputs.reportName }}
+
+          path: "${{ steps.get-pdf-options.outputs.pdfName }}"
+
+ 
+
+      - run: |
+
+          FPRUtility.bat -project ${{ steps.get-fpr-name.outputs.fprName }} -information -listIssues -categoryIssueCounts
+
+ 
+
+      - name: Run fortify Critical
+
+        id: run-fortify-critical
+
+        run: |
+
+          $result=FPRUtility.bat -project ${{ steps.get-fpr-name.outputs.fprName }} -information -search -query "[fortify priority order]:critical"
+
+          $result=$result.Split([Environment]::NewLine) | Select -Last 1
+
+          echo $result
+
+          $score=0
+
+          [int]::TryParse($result.Split(' ')[0], [ref]$score)
+
+          echo "::set-output name=score::$score"
+
+        shell: pwsh
+
+ 
+
+      - name: Run fortify High
+
+        id: run-fortify-high
+
+        run: |
+
+          $result=FPRUtility.bat -project ${{ steps.get-fpr-name.outputs.fprName }} -information -search -query "[fortify priority order]:high"
+
+          $result=$result.Split([Environment]::NewLine) | Select -Last 1
+
+          echo $result
+
+          $score=0
+
+          [int]::TryParse($result.Split(' ')[0], [ref]$score)
+
+          echo "::set-output name=score::$score"
+
+        shell: pwsh
+
+ 
+
+      - name: Run fortify Medium
+
+        id: run-fortify-medium
+
+        run: |
+
+          $result=FPRUtility.bat -project ${{ steps.get-fpr-name.outputs.fprName }} -information -search -query "[fortify priority order]:medium"
+
+          $result=$result.Split([Environment]::NewLine) | Select -Last 1
+
+          echo $result
+
+          $score=0
+
+          [int]::TryParse($result.Split(' ')[0], [ref]$score)
+
+          echo "::set-output name=score::$score"
+
+        shell: pwsh
+
+ 
+
+      - name: Run fortify Low
+
+        id: run-fortify-low
+
+        run: |
+
+          $result=FPRUtility.bat -project ${{ steps.get-fpr-name.outputs.fprName }} -information -search -query "[fortify priority order]:low"
+
+          $result=$result.Split([Environment]::NewLine) | Select -Last 1
+
+          echo $result
+
+          $score=0
+
+          [int]::TryParse($result.Split(' ')[0], [ref]$score)
+
+          echo "::set-output name=score::$score"
+
+        shell: pwsh
+
+ 
+
+      - name: Calculate Score
+
+        id: score
+
+        run: |
+
+          $final=${{steps.run-fortify-critical.outputs.score}} + ${{steps.run-fortify-high.outputs.score}}
+
+           echo "::set-output name=final::$final"
+
+ 
+
+      - name: Publish Scores to Metrics
+
+        uses: peter-evans/repository-dispatch@v1
+
+        with:
+
+          token: ${{ secrets.IX_ACTIONS_PAT }}
+
+          event-type: announce-metrics
+
+          repository: philips-internal/iX-cicd-metrics
+
+          client-payload: '{"fortify": "${{steps.score.outputs.final}}", "repo_name":"${{ github.event.repository.name }}", "username" : "${{github.actor}}", "group": "iX" }'
+
+ 
+
+      - name: Publish to Fortify Server
+
+        continue-on-error: true
+
+        id: publish
+
+        run: fortifyclient -url https://fortify.philips.com/ssc -authtoken ${{ secrets.FORTIFY_UPLOAD_TOKEN }}  uploadFPR -file ${{ steps.get-fpr-name.outputs.fprName }} -project "PIC iX"  -version ${{ steps.get-version.outputs.version }}
