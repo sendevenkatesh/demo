@@ -1,10 +1,10 @@
 name: Fortify ScanCentral SAST Scan
 on:
-  workflow_dispatch:
+
   push:
-        branches: [main]
+        branches: [fortify]
   pull_request:
-        branches: [main]
+        branches: [fortify]
 jobs:                                                  
   Fortify-SAST:
     runs-on: ubuntu-latest 
