@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-    - 'master'
+    - 'fortify'
 
 jobs:
   build:
