@@ -105,4 +105,6 @@ outputs:
     description: 'A version prepared for release tagging, usually with removed "SNAPSHOT" suffix and optionally with a build metadata'
   NEXT_VERSION:
     description: 'A version prepared for pushing into a repository instead of "CURRENT_VERSION" after release, usually incremented by 1'
-
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
