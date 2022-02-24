@@ -7,7 +7,7 @@ on:
         branches: [fortify]
 jobs:                                                  
   Fortify-SAST:
-    runs-on: windows-latest 
+    runs-on: ubuntu-latest 
     steps:
       
     # Check out source code
@@ -40,7 +40,7 @@ jobs:
 
           echo "::set-output name=buildName::$build_name"
 
-        shell: pwsh
+        shell: bash
       - run: pwd
       - run: sourceanalyzer -b ${{ steps.get-build-name.outputs.buildName }} -clean
 
