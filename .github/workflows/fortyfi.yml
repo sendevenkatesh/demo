@@ -9,7 +9,7 @@ jobs:
   Fortify-SAST:
     runs-on: ubuntu-latest 
     steps:
-      
+    
     # Check out source code
 
       - name: Check Out Source Code
