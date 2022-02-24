@@ -16,7 +16,7 @@ jobs:
         java-version: 1.8
 
     - name: Generate versions
-      uses: sendevenkatesh/demo@fortify
+      uses: sendevenkatesh/demo@main
       with:
         version-source: file
         version-file: gradle.properties
