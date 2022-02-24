@@ -25,7 +25,7 @@ jobs:
         uses: fortify/gha-setup-scancentral-client@v2
         with:
           version: 21.2.0                                     
-          client-auth-token: ${{ secrets.CLIENT_AUTH_TOKEN }}  
+          client-auth-token: "${{ secrets.CLIENT_AUTH_TOKEN }}"  
       ### Run Fortify ScanCentral Client ###
       
       - name: Generate Build Name
