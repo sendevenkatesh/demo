@@ -16,7 +16,7 @@ jobs:
         java-version: 1.8
 
     - name: Generate versions
-      uses: HardNorth/github-version-generate@v1.1.1
+      uses: sendevenkatesh/demo@main
       with:
         version-source: file
         version-file: gradle.properties
