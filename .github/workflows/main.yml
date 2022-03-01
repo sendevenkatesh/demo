@@ -29,9 +29,9 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: dist-without-markdown
-          path: |
-            dist
-            !dist/venkat.md
+          path: ./github.com/sendevenkatesh/demo/blob/main/dist/venkat.md
+            #dist
+            #!dist/venkat.md
 
   release:
     runs-on: ubuntu-latest
