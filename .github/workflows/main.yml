@@ -28,8 +28,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
          name: my-artifact
-         path: ./demo/dist/venkat.md
-
+         path: .demo/tree/main/dist/venkat.md
   release:
     runs-on: ubuntu-latest
     steps:
