@@ -24,6 +24,13 @@ jobs:
       - shell: bash
         run: |
           expr 1 + 1 > output.log
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist-without-markdown
+          path: |
+            dist
+            !dist/venkat.md
 
   release:
     runs-on: ubuntu-latest
