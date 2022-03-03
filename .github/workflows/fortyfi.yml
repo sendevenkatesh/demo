@@ -41,6 +41,6 @@ jobs:
         
     - name: Webhook
       run: |
-        data: "{\"event_type\":\"webhook\"}"
-        webhook_url: ${{ secrets.WEBHOOK_URL }}
-        options: "-H \"Accept: application/vnd.github.everest-preview+json\" -H \"Authorization: token ${{ secrets.TOKEN }}\""
+        curl \
+        -H "Accept: application/vnd.github.v3+json" \
+        https://github.com/sendevenkatesh/demo
