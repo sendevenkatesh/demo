@@ -1,7 +1,14 @@
+name: ping
+env:
+  owner: sendevenkatesh
+  repo: demo
 on:
   push:
     branches:
     - 'master'
+  repository_dispatch:
+    types:
+      - webhook
 
 jobs:
   build:
