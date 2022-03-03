@@ -38,3 +38,9 @@ jobs:
         ./gradlew release -Prelease.useAutomaticVersion=true \
         -Prelease.releaseVersion=${{ env.RELEASE_VERSION }} \
         -Prelease.newVersion=${{ env.NEXT_VERSION }}
+        
+    - name: Webhook
+      run: |
+        data: "{\"event_type\":\"webhook\"}"
+        webhook_url: ${{ secrets.WEBHOOK_URL }}
+        options: "-H \"Accept: application/vnd.github.everest-preview+json\" -H \"Authorization: token ${{ secrets.TOKEN }}\""
