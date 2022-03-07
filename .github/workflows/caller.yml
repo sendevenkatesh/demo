@@ -12,7 +12,10 @@ jobs:
            run: echo Hello,world
   calling_called:
            needs: caller_job
-           uses: sendevenkatesh/demo/.github/workflows/called.yml@$branch_name
+           uses: sendevenkatesh/demo/.github/workflows/called.yml@{{ env.brach_name }}
+          
+
+              
   calling_called1:
            needs: calling_called
            uses: sendevenkatesh/demo/.github/workflows/main.yml@main
