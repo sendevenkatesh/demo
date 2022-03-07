@@ -15,6 +15,11 @@ jobs:
          - name: Prints the current branch name
            run: |
              echo "${{ env.branch }}"
+             
+         - name: Prints the current branch name
+           run: echo "${GITHUB_BRANCH##*/}"
+           env:
+             GITHUB_BRANCH: ${{ github.ref }}
   calling_called:
            needs: caller_job
            uses: sendevenkatesh/demo/.github/workflows/called.yml@main
