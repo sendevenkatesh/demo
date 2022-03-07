@@ -15,9 +15,7 @@ jobs:
   calling_called:
            needs: caller_job
            uses: sendevenkatesh/demo/.github/workflows/called.yml@main
-           with:
-            my-variable: ${{ needs.MyJobId.outputs.MyVariable }}
-            ref: ${{ github.GITHUB_REF_NAME }}
+           
                         
   calling_called1:
            needs: calling_called
