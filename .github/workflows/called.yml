@@ -1,9 +1,15 @@
 name: called workflow
-on: 
+on:
+
  workflow_call:
+ 
 jobs: 
+ 
   build:
      runs-on: ubuntu-latest
+     env: 
+      my-variable: ${{ needs.MyJobId.outputs.MyVariable }}
+      ref: ${{ github.GITHUB_REF_NAME }}
      
      steps:
          - name: step-1
