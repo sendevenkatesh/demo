@@ -12,7 +12,10 @@ jobs:
            run: echo Hello,world
   calling_called:
            needs: caller_job
-           uses: sendevenkatesh/demo/.github/workflows/called.yml@{{ env.brach_name }}
+           uses: sendevenkatesh/demo/.github/workflows/called.yml@main
+           with: 
+            run: |
+              echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
           
 
               
