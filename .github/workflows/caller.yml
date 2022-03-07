@@ -1,5 +1,6 @@
 ##caller workflow
-
+env:
+ branch_name: hello
 name: reusable workflow
 on: 
   push
@@ -11,7 +12,7 @@ jobs:
            run: echo Hello,world
   calling_called:
            needs: caller_job
-           uses: sendevenkatesh/demo/.github/workflows/called.yml@main
+           uses: sendevenkatesh/demo/.github/workflows/called.yml@$branch_name
   calling_called1:
            needs: calling_called
            uses: sendevenkatesh/demo/.github/workflows/main.yml@main
