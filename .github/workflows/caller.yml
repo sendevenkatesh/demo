@@ -1,6 +1,5 @@
 ##caller workflow
-env:
- branch_name: hello
+
 name: reusable workflow
 on: 
   push
