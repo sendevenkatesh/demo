@@ -1,7 +1,15 @@
 name: ci for java 
-on: 
-  push: 
-    branches: [dev]
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+  workflow_dispatch:
+
+  # Allows external webhook trigger
+  repository_dispatch:
+    types:
+      - webhook
 jobs:
   build:
     runs-on: ubuntu-latest
