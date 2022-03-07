@@ -12,9 +12,9 @@ jobs:
   calling_called:
            needs: caller_job
            uses: sendevenkatesh/demo/.github/workflows/called.yml@main
-           with: 
-            run: |
-              echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
+           #with: 
+            #run: |
+             # echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
           
 
               
