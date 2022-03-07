@@ -3,6 +3,8 @@
 name: reusable workflow
 on:
   push
+env:
+  branch: 'hello'
 jobs: 
   caller_job:
      runs-on: windows-latest
@@ -11,7 +13,8 @@ jobs:
            run: echo Hello,world
  
          - name: Prints the current branch name
-           run: echo "${GITHUB_BRANCH##*/}"
+           run: |
+             echo "${{ env.branch }}"
   calling_called:
            needs: caller_job
            uses: sendevenkatesh/demo/.github/workflows/called.yml@main
