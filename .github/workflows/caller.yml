@@ -12,9 +12,6 @@ jobs:
          - name: script
            run: echo Hello,world
  
-         - name: Prints the current branch name
-           run: |
-             echo "${{ env.branch }}"
              
          - name: Prints the current branch name
            run: echo "${GITHUB_BRANCH##*/}"
@@ -23,6 +20,9 @@ jobs:
   calling_called:
            needs: caller_job
            uses: sendevenkatesh/demo/.github/workflows/called.yml@main
+           with:
+             my-variable: ${{ needs.MyJobId.outputs.MyVariable }}
+             ref: ${{ github.GITHUB_REF_NAME }}
            
                         
   calling_called1:
