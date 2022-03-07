@@ -4,6 +4,8 @@ on:
 jobs: 
   build:
      runs-on: ubuntu-latest
+     env: 
+        branch_name: main
      steps:
          - name: step-1
            run: |
