@@ -7,9 +7,9 @@ on:
      - main
   pull_request:
     branches:
-      - main
+     - main
 env:
-  branch: "github.ref"
+  branch: github.ref
 jobs: 
   caller_job:
      runs-on: windows-latest
@@ -23,7 +23,7 @@ jobs:
              GITHUB_BRANCH: ${{ github.ref }}
   calling_called:
            needs: caller_job
-           uses: sendevenkatesh/demo/.github/workflows/called.yml@$branch
+           uses: sendevenkatesh/demo/.github/workflows/called.yml@$github.ref
                                 
   calling_called1:
            needs: calling_called
