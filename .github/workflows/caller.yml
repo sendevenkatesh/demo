@@ -2,27 +2,26 @@
 
 name: reusable workflow
 on:
-  push
+  pull_request:
+    branches:
+      - main
 env:
-  branch: main
+  branch: "GITHUB_REF_NAME"
 jobs: 
   caller_job:
      runs-on: windows-latest
      steps:
          - name: script
            run: echo Hello,world
- 
-             
+            
          - name: Prints the current branch name
            run: echo "${GITHUB_BRANCH##*/}"
            env:
              GITHUB_BRANCH: ${{ github.ref }}
   calling_called:
            needs: caller_job
-           uses: sendevenkatesh/demo/.github/workflows/called.yml@"${{branch}}"
-           
-           
-                        
+           uses: sendevenkatesh/demo/.github/workflows/called.yml@$branch
+                                
   calling_called1:
            needs: calling_called
            uses: sendevenkatesh/demo/.github/workflows/main.yml@main
