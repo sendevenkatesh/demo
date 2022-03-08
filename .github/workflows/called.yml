@@ -3,7 +3,7 @@ on:
 
  workflow_call:
 env:
- branch: GITHUB_REF_NAME
+ branch: main
 
 jobs: 
  
