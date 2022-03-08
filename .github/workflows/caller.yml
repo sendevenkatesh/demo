@@ -4,7 +4,7 @@ name: reusable workflow
 on:
   push
 env:
-  branch: GITHUB_REF_NAME
+  branch: main
 jobs: 
   caller_job:
      runs-on: windows-latest
@@ -19,7 +19,8 @@ jobs:
              GITHUB_BRANCH: ${{ github.ref }}
   calling_called:
            needs: caller_job
-           uses: sendevenkatesh/demo/.github/workflows/called.yml@${{branch}}
+           uses: sendevenkatesh/demo/.github/workflows/called.yml@"${{branch}}"
+           
            
                         
   calling_called1:
