@@ -4,7 +4,7 @@ name: reusable workflow
 on:
   push
 env:
-  branch: 'hello'
+  branch: GITHUB_REF_NAME
 jobs: 
   caller_job:
      runs-on: windows-latest
@@ -19,7 +19,7 @@ jobs:
              GITHUB_BRANCH: ${{ github.ref }}
   calling_called:
            needs: caller_job
-           uses: sendevenkatesh/demo/.github/workflows/called.yml@main
+           uses: sendevenkatesh/demo/.github/workflows/called.yml@$branch
            with:
              my-variable: ${{ needs.MyJobId.outputs.MyVariable }}
              ref: ${{ github.GITHUB_REF_NAME }}
