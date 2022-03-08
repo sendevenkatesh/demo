@@ -9,7 +9,7 @@ on:
     branches:
       - main
 env:
-  branch: "GITHUB_REF_NAME"
+  branch: "github.ref"
 jobs: 
   caller_job:
      runs-on: windows-latest
