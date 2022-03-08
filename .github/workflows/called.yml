@@ -2,9 +2,10 @@ name: called workflow
 on:
 
  workflow_call:
-env:
- branch: main
-
+  inputs:
+      branch:
+        required: true
+        type: string
 jobs: 
  
   build:
