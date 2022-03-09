@@ -3,9 +3,9 @@ name: ping
 on:
  
   push:
-    branches: [ source ]
+    branches: [ main ]
   pull_request:
-    branches: [ source ]
+    branches: [ main ]
   
   repository_dispatch:
     types: [webhook]
