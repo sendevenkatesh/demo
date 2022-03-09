@@ -1,6 +1,11 @@
 name: ping
 
 on:
+ 
+  push:
+    branches: [ source ]
+  pull_request:
+    branches: [ source ]
   
   repository_dispatch:
     types: [webhook]
