@@ -34,8 +34,8 @@ jobs:
         -Prelease.releaseVersion=${{ env.RELEASE_VERSION }} \
         -Prelease.newVersion=${{ env.NEXT_VERSION }}
         
-    - name: Webhook
-      run: |
-        curl \
-        -H "Accept: application/json" \
-        https://api.github.com/sendevenkatesh/demo/dispatches
+    #- name: Webhook
+     # run: |
+      #  curl \
+       # -H "Accept: application/json" \
+        #https://api.github.com/sendevenkatesh/demo/dispatches
