@@ -2,8 +2,8 @@ name: ping
 
 on:
   
-  #repository_dispatch:
-   # types: [webhook]
+  repository_dispatch:
+    types: [webhook]
 
 jobs:
   build:
