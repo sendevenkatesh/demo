@@ -1,14 +1,14 @@
 name: ping
 
-#on:
+on:
  
-  ##push:
-  #  branches: [ main ]
-  #pull_request:
-   # branches: [ main ]
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
   
-  ##repository_dispatch:
-   ## types: [build]
+  repository_dispatch:
+    types: [build]
 
 jobs:
   build:
