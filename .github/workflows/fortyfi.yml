@@ -1,49 +1,24 @@
 name: ping
 
 on:
-  workflow_dispatch:
-  #push:
-    #branches: [ main ]
+  push:
+    branches: [ main ]
   #pull_request:
    # branches: [ main ]
-  
-  repository_dispatch:
-    types: [build]
-  schedule:
-    - cron: "*/5 * * * *"
 
 jobs:
-  build:
+  build-test:
+    name: Build & Test
     runs-on: ubuntu-latest
-    if: github.event.ref == 'refs/heads/main'
-
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2     # checkout the repo
+      - run: npm ci                   # install packages
+      - run: npm test                 # run tests (configured to use jest-junit reporter)
 
-    - name: Set up JDK 1.8
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.8
-
-    - name: Generate versions
-      uses: HardNorth/github-version-generate@v1.1.1
-      with:
-        version-source: file
-        version-file: gradle.properties
-        version-file-extraction-pattern: '(?<=version=).+'
-
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-
-    - name: Release with Gradle
-      id: release
-      run: |
-        ./gradlew release -Prelease.useAutomaticVersion=true \
-        -Prelease.releaseVersion=${{ env.RELEASE_VERSION }} \
-        -Prelease.newVersion=${{ env.NEXT_VERSION }}
-        
-    #- name: Webhook
-     # run: |
-      #  curl \
-       # -H "Accept: application/json" \
-        #https://api.github.com/sendevenkatesh/demo/dispatches
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: JEST Tests            # Name of the check run which will be created
+          path: reports/jest-*.xml    # Path to test results
+          reporter: jest-junit        # Format of test results
